@@ -1,0 +1,90 @@
+{# Трекинг заказа #}
+
+{% extends "layout.twig" %}
+
+{% block meta_title %} Отслеживание заказа {{ package.sku }} {% endblock %}
+
+{% block body %}
+
+  {% include 'breadcrumb.twig' with {'currentPage': 'Отслеживание заказа'} %}
+
+  <div class="content-wrap line_bg" id="trackingView">
+    <div class="container clearfix">
+
+      <div class="row clearfix">
+        <div class="col span4 about-img-box"><img src="/images/status_img.png" alt=""/></div>
+        <div class="col span8 about-text">
+          <h1>Отслеживание заказа</h1>
+
+          {% include 'Tracking/_searchForm.twig' %}
+
+          <div class="search-result">
+
+            <h3>Информация о заказе</h3>
+            <div class="table table-result mb45">
+              <div class="table_row">
+                <div class="table_cell">Номер заказа:</div>
+                <div class="table_cell intro24">{{ package.sku }}</div>
+              </div>
+
+              <div class="table_row">
+                <div class="table_cell">Сумма к оплате:</div>
+                <div class="table_cell intro12">{{ package.price }}<span class="f16">р.</span></div>
+              </div>
+              <div class="table_row">
+                <div class="table_cell">Вес:</div>
+                <div class="table_cell">{{ package.weight }}</div>
+              </div>
+              <div class="table_row">
+                <div class="table_cell">Адрес пункта выдачи:</div>
+                <div class="table_cell"> г. {{ endPunktInfo.city }}, {{ endPunktInfo.address }}</div>
+              </div>
+
+              <div class="table_row">
+                <div class="table_cell">Контактный телефон пункта:</div>
+                <div class="table_cell">{{ endPunktInfo.phone }}</div>
+              </div>
+              <div class="table_row">
+                <div class="table_cell">Время работы пункта:</div>
+                <div class="table_cell">{{ endPunktInfo.work_time }}</div>
+              </div>
+            </div>
+
+            <hr class="hr_min mb65">
+
+            <div class="result-list clearfix">
+              {% for punkt in punkts %}
+                {% if punkt.date != false %}
+                  <div class="result-box">
+                    <div class="date">{{ punkt.date }}</div>
+                    <div class="info">
+                      <h5>{{ punkt.status }}</h5>
+                      <div class="adres">
+                        <template>
+                          г. <span>{{ punkt.city }}</span>,
+                        </template>
+                        <span>г. {{ punkt.city }}, {{ punkt.address }}</span></div>
+                    </div>
+                  </div>
+                {% else %}
+                  <div class="future-point">
+                    <div class="date"></div>
+                    <div class="info">
+                      <h5>{{ punkt.status }}</h5>
+                      <div class="adres">
+                        <template>
+                          г. <span>{{ punkt.city }}</span>,
+                        </template>
+                        <span>{{ punkt.full_address }}</span></div>
+                    </div>
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div><!-- /.result-list -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
